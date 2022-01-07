@@ -75,13 +75,19 @@ if (isset($_POST['reg_user'])) {
         }
     }
     if (count($errors) == 0) {
-        $sql = "INSERT INTO tb_tn_booking(booking_id, customer_id, pa1_id, pa2_id, is_duo, locker_id, 
-                                                      locker_name, booking_type, start_date, end_date, mirefare_id,status_id, status_name, create_date, create_by)
-         VALUES ('$booking_id', '$customer_id', '$pa1_id', '$pa2_id', $is_duo, '$locker_id', '$locker_name', '$booking_type', '$start_date', '$end_date', '$mirefare_id',  1, 'booking', curdate(), '$create_by')";
-        $query = mysqli_query($conn, $sql);
 
+        try {
+            echo $booking_type;
+
+            $sql = "INSERT INTO tb_tn_booking(booking_id, customer_id, pa1_id, pa2_id, is_duo, locker_id, locker_name, booking_type, start_date, end_date, mirefare_id, remark, status_id, status_name, create_date, create_by) 
+            VALUES ('$booking_id', '$customer_id', '$pa1_id', '$pa2_id', $is_duo, $locker_id, '$locker_name', '$booking_type', curdate(), curdate(), '$mirefare_id', 'remark', 1, 'booking', curdate(), '$create_by')";
+            $query = mysqli_query($conn, $sql);
+        } catch (Exception $e) {
+
+            echo "Caught exception : <b>" . $e->getMessage() . "</b><br/>";
+        }
         if ($query) {
-            $sql = "UPDATE tb_mas_lockers SET is_empty='false' WHERE locker_id = '$locker_id'";
+            $sql = "UPDATE tb_mas_lockers SET is_empty=0 WHERE locker_id = '$locker_id'";
             $query = mysqli_query($conn, $sql);
 
             $sql2 = "INSERT INTO tb_booking_log(booking_id, activity, period, start_date, end_date, create_date, create_by) VALUES ('$booking_id','add','$booking_type','$start_date','$end_date','$create_date', '$employee_id_add')";

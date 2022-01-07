@@ -2,7 +2,7 @@
 
     $servername = "localhost";
     $username = "root";
-    $password = "";
+    $password = "1234";
     $dbname = "security_locker";
 
     // Create Connection

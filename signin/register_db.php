@@ -22,7 +22,7 @@ if (isset($_POST['reg_user'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password_1 = mysqli_real_escape_string($conn, $_POST['password_1']);
     $password_2 = mysqli_real_escape_string($conn, $_POST['password_2']);
-    $my_arr = array('employee_id' => $employee_id, 'first_name' => $first_name, 'last_name' => $last_name, 'role' => $role, 'phone' => $phone, 'email' => $email, 'password_1' => $password_1, 'password_2' => $password_2);
+    //$my_arr = array('employee_id' => $employee_id, 'first_name' => $first_name, 'last_name' => $last_name, 'role' => $role, 'phone' => $phone, 'email' => $email, 'password_1' => $password_1, 'password_2' => $password_2);
     if (empty($username)) {
         array_push($errors, "Username is required");
         $_SESSION['error'] = "Username is required";
