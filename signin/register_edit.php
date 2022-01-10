@@ -49,7 +49,7 @@ if (isset($_GET['employee_id'])) {
                                                 <div class="form-floating mb-3 mb-md-0">
                                                     <select class="form-control" name="role" id="role">
                                                         <option value=""> --------------SELECT CHANGE--------------</option>
-                                                        <option value="supper admin">Super admin</option>
+                                                        <option value="superadmin">Super admin</option>
                                                         <option value="admin">Admin</option>
                                                         <option value="staff">Staff</option>
                                                     </select>
