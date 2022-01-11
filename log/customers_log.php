@@ -98,10 +98,11 @@ $errors = array();
                         </a>
                         <div class="collapse" id="collapseDepartment" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="log/employees_log.php">Employees Log</a>
-                                <a class="nav-link" href="log/customers_log.php">Customers Log</a>
-                                <a class="nav-link" href="log/booking_log.php">Booking Log</a>
-                                <a class="nav-link" href="log/access_log.php">Access Log</a>
+                                <a class="nav-link" href="../log/employees_log.php">Employees Log</a>
+                                <a class="nav-link" href="../log/customers_log.php">Customers Log</a>
+                                <a class="nav-link" href="../log/booking_log.php">Booking Log</a>
+                                <a class="nav-link" href="../log/access_log.php">Access Log</a>
+                                <a class="nav-link" href="../log/breaking_log.php">Breaking Log</a>
                             </nav>F
                         </div>
                     </div>

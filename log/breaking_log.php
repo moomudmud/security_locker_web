@@ -4,7 +4,6 @@ include('../inc/server.php');
 include('../inc/header.php');
 include('../inc/config.inc.php');
 
-
 echo '
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
@@ -38,7 +37,7 @@ $errors = array();
 <html lang="en">
 
 <head>
-    <title>Booking</title>
+    <title>Breaking log</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 </head>
 
@@ -51,7 +50,7 @@ $errors = array();
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         </form>
-        <form action="" method="post">
+        <form action="" method="get">
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -99,44 +98,54 @@ $errors = array();
                         </a>
                         <div class="collapse" id="collapseDepartment" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="log/employees_log.php">Employees Log</a>
-                                <a class="nav-link" href="log/customers_log.php">Customers Log</a>
-                                <a class="nav-link" href="log/booking_log.php">Booking Log</a>
-                                <a class="nav-link" href="log/access_log.php">Access Log</a>
-                                <a class="nav-link" href="log/breaking_log.php">Breaking Log</a>
+                                <a class="nav-link" href="../log/employees_log.php">Employees Log</a>
+                                <a class="nav-link" href="../log/customers_log.php">Customers Log</a>
+                                <a class="nav-link" href="../log/booking_log.php">Booking Log</a>
+                                <a class="nav-link" href="../log/access_log.php">Access Log</a>
+                                <a class="nav-link" href="../log/breaking_log.php">Breaking Log</a>
+
                             </nav>
                         </div>
-
                     </div>
-                </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:</div>
-                    <?php echo $_SESSION['first_name'] . ' ' . $_SESSION['last_name']; ?>
-                    Role: <?php echo $_SESSION['role']; ?><br>
-                </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        <?php echo $_SESSION['first_name'] . ' ' . $_SESSION['last_name']; ?>
+                        Role: <?php echo $_SESSION['role']; ?><br>
+                    </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Booking</h1>
+                    <h1 class="mt-4">Breaking log</h1>
                     <ol class="breadcrumb mb-2">
                         <li class="breadcrumb-item"><a href="../index.php">Home</a></li>
-                        <li class="breadcrumb-item active">Booking</li>
+                        <li class="breadcrumb-item active">Access log</li>
                     </ol>
                     <div style="overflow-x:auto;">
                         <table class="table table-striped  table-hover table-responsive table-bordered">
                             <tr>
-                                <td>Customer ID<input type="search" name="customer_id" class="form-control"></td>
-                                <td>Name <input type="search" name="first_name" class="form-control"> </td>
+                                <td>Booking ID<input type="search" name="booking_id" class="form-control"></td>
+                                <td>Owner/PA <input type="search" name="owner" class="form-control"> </td>
+                            </tr>
+                            <tr>
+                                <td>Employee ID<input type="search" name="employee_id" class="form-control"></td>
+                                <td>Locker <select class="form-control" name="locker" id="locker">
+                                        <option value="">---SELECT---</option>
+                                        <?php
+                                        $Query = "SELECT * FROM tb_mas_lockers";
+                                        $result = mysqli_query($conn, $Query) or die("database error:" . mysqli_error($conn));
+
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                            <option value="<?= $row['locker_name']; ?>"><?= $row['locker_name']; ?></option>
+
+                                        <?php } ?>
+                                    </select></td>
                             </tr>
 
-                            <tr>
-                                <td>Phone <input type="search" name="phone" class="form-control"></td>
-                                <td>ID card / Passport <input type="search" name="car" class="form-control"></td>
-                            <tr>
-                                <td align='right'><button type="submit" class="btn btn-primary">ค้นหาข้อมูล</button></a></td>
-                                <td align='left'><button type="button" class="btn btn-primary dataExport" data-type="excel" data-filename="booing_log">Export XLS</button></a></td>
+                            <td align='right'><button type="submit" class="btn btn-primary">ค้นหาข้อมูล</button></a></td>
+                            <td align='left'><button type="button" class="btn btn-primary dataExport" data-type="excel" data-filename="booking_log">Export XLS</button></a></td>
 
                             </tr>
                             </tr>
@@ -145,29 +154,40 @@ $errors = array();
                         </table>
                         <table id="dataTable" class="table table-striped">
                             <thead style="vertical-align: top;">
-                                <a href="../transaction/booking_add.php" class="btn btn-success">+Booking </a>
                                 <tr>
                                     <th>Booking ID</th>
-                                    <th>OWNER</th>
-                                    <th>Start date</th>
-                                    <th>Expire date</th>
+                                    <th>Owner ID</th>
+                                    <th>Super admin ID</th>
+                                    <th>Admin ID</th>
                                     <th>Locker</th>
-                                    <th>Status</th>
-                                    <th>
-                                        <center>Edit</center>
-                                    </th>
-                                    <th>
-                                        <center>Detail</center>
-                                    </th>
-
-
+                                    <th>Breaking Date-Time</th>
+                                </tr>
 
                             </thead>
                             <tbody>
                                 <?php
-                                $Query = "SELECT *  FROM tb_tn_booking b";
+                                if (isset($_GET['booking_id'])) {
+                                    $booking_id = "%{$_GET['booking_id']}%";
+                                    $owner = "%{$_GET['owner']}%";
+                                    $locker = "%{$_GET['locker']}%";
+                                    $employee_id = "%{$_GET['employee_id']}%";
 
-                                $result = mysqli_query($conn, $Query) or die("database error:" . mysqli_error($conn));
+                                    $Query = "SELECT * FROM tb_access_log l
+                                              LEFT JOIN tb_mas_lockers m ON l.locker_id = m.locker_id
+                                              WHERE (l.booking_id     LIKE '$booking_id' OR '$booking_id' IS NULL)
+                                              AND   ((l.owner_id       LIKE '$owner')
+                                              OR     (l.pa1_id         LIKE '$owner')
+                                              OR     (l.pa2_id         LIKE '$owner') 
+                                              OR     ('$owner' IS NULL))
+                                              AND (l.employee_id       LIKE '$employee_id' OR '$employee_id' IS NULL)
+                                              AND (m.locker_name       LIKE '$locker'      OR '$locker'      IS NULL)";
+                                    $result = mysqli_query($conn, $Query) or die("database error:" . mysqli_error($conn));
+                                } else {
+                                    $Query = "SELECT * FROM tb_breaking_log l
+                                              LEFT JOIN tb_mas_lockers m ON l.locker_id = m.locker_id";
+                                    $result = mysqli_query($conn, $Query) or die("database error:" . mysqli_error($conn));
+                                }
+
                                 while ($row = mysqli_fetch_assoc($result)) {
 
 
@@ -177,30 +197,22 @@ $errors = array();
                                             <?php echo $row['booking_id']; ?>
                                         </td>
                                         <td>
-                                            <?php echo $row['customer_id']; ?>
+                                            <?php echo $row['owner_id']; ?>
                                         </td>
                                         <td>
-                                            <?php echo $row['start_date']; ?>
+                                            <?php echo $row['super_admin_id']; ?>
                                         </td>
                                         <td>
-                                            <?php echo $row['end_date']; ?>
+                                            <?php echo $row['admin_id']; ?>
                                         </td>
                                         <td>
                                             <?php echo $row['locker_name']; ?>
                                         </td>
                                         <td>
-                                            <?php echo $row['status_name']; ?>
+                                            <?php echo $row['date_time']; ?>
                                         </td>
-
-                                        <td>
-                                            <center><a href="../transaction/booking_edit.php?booking_id=<?= $row['booking_id']; ?>" class="btn btn-warning btn-sm">EDIT</a></center>
-                                        </td>
-                                        <td>
-                                            <center><a href="../transaction/booking_review.php?booking_id=<?= $row['booking_id']; ?>" class="btn btn-info btn-sm">View</a></center>
-                                        </td>
-
-
                                     </tr>
+
                                 <?php } ?>
                             </tbody>
                         </table>

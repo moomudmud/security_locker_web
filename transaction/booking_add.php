@@ -81,10 +81,6 @@ echo '
                                 </div>
                                 <div class="card-body">
                                     <form action="booking_add_db.php" method="post">
-                                        Value :
-
-                                        <input type="text" name="txtInput" value="">
-                                        <input name="Close" type="submit" id="Close" onClick="Javascript:updateOpener()" value="Close">
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
@@ -93,29 +89,62 @@ echo '
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-6">
                                                 <div class="form-floating mb-0 mb-md-0">
-                                                    <input class="form-control" id="customer_id" type="text" name="customer_id" placeholder="Enter Customer ID" required minlength="3" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <button type="button" class="form-control "><i class="fa fa-search" onclick="CustomerOpenPopup();"></i></button>
-                                                </div>
+                                                    <select id="select-testing" class="form-control" data-live-search="true" name="customer_id" placeholder="Select owner" required minlength="3">
+                                                        <option value="">------SELECT OWNER------</option>
+                                                        <?php
+                                                        $Query = "SELECT *  
+                                                                  FROM tb_mas_customers
+                                                                  WHERE role='owner'";
 
+                                                        $result = mysqli_query($conn, $Query) or die("database error:" . mysqli_error($conn));
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                        ?>
+                                                            <option value="<?= $row['customer_id']; ?>"><?= $row['first_name']; ?>&nbsp;<?= $row['last_name']; ?> </option>
+
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
-
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" id="pa1_id" type="text" name="pa1_id" placeholder="Enter PA1" onkeyup="pa_check()" />
+                                                    <select class="form-control" data-live-search="true" id="pa1_id" name="pa1_id" onkeyup="pa_check()">
+                                                        <option value="">------SELECT PA1------</option>
+                                                        <?php
+                                                        $Query = "SELECT *  
+                                                                  FROM tb_mas_customers
+                                                                  WHERE role='pa'";
+
+                                                        $result = mysqli_query($conn, $Query) or die("database error:" . mysqli_error($conn));
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                        ?>
+                                                            <option value="<?= $row['customer_id']; ?>"><?= $row['first_name']; ?>&nbsp;<?= $row['last_name']; ?> </option>
+
+                                                        <?php } ?>
+                                                    </select>
                                                     <label for="inputPA1">PA1</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating">
-                                                    <input class="form-control" id="pa2_id" type="text" name="pa2_id" placeholder="Enter PA2"  onkeyup="pa_check()" />
+                                                <select class="form-control" data-live-search="true" id="pa2_id" name="pa2_id" onkeyup="pa_check()">
+                                                        <option value="">------SELECT PA2------</option>
+                                                        <?php
+                                                        $Query = "SELECT *  
+                                                                  FROM tb_mas_customers
+                                                                  WHERE role='pa'";
+
+                                                        $result = mysqli_query($conn, $Query) or die("database error:" . mysqli_error($conn));
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                        ?>
+                                                            <option value="<?= $row['customer_id']; ?>"><?= $row['first_name']; ?>&nbsp;<?= $row['last_name']; ?> </option>
+
+                                                        <?php } ?>
+                                                    </select>
+                                                    
                                                     <label for="inputPA2">PA2</label>
                                                 </div>
                                             </div>
@@ -133,7 +162,7 @@ echo '
                                                         }
 
                                                         function pa_check() {
-                                                            if (document.getElementById("pa1_id").value != "" && document.getElementById("pa2_id").value != "") {
+                                                            if (document.getElementById("pa1_id").value == "" && document.getElementById("pa2_id").value != "") {
                                                                 document.getElementById('is_duo').disabled = false;
                                                             } else {
                                                                 document.getElementById('is_duo').disabled = true;

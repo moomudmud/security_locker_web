@@ -15,7 +15,7 @@ if (isset($_SESSION['employee_id'])) {
 
 if (isset($_POST['reg_user'])) {
     $create_by = $_SESSION['employee_id'];
-    echo $create_by;
+
     $booking_id = mysqli_real_escape_string($conn, $_POST['booking_id']);
     $customer_id = mysqli_real_escape_string($conn, $_POST['customer_id']);
     if (empty($_POST['pa1_id'])) {
@@ -56,11 +56,11 @@ if (isset($_POST['reg_user'])) {
     }
 
 
-    $user_check_query = "SELECT * FROM tb_tn_booking WHERE booking_id = '$booking_id'LIMIT 1";
+    $user_check_query = "SELECT * FROM tb_tn_booking WHERE booking_id = '$booking_id' OR mirefare_id = $mirefare_id LIMIT 1";
     $query = mysqli_query($conn, $user_check_query);
     $result = mysqli_fetch_assoc($query);
     if ($result) { // if user exists
-        if ($result['booking_id'] === $booking_id) {
+        if (($result['booking_id'] === $booking_id)){
             echo '<script>
                 setTimeout(function() {
                  swal({
@@ -68,16 +68,31 @@ if (isset($_POST['reg_user'])) {
                      text: "Duplicate Customer ID.",
                      type: "warning"
                  }, function() {
-                     window.location = "../transaction/booking.php"; //หน้าที่ต้องการให้กระโดดไป
+                    window.history.back()
+                 });192
+               }, 1000);
+         </script>';
+        }
+
+        if (($result['mirefare_id'] === $mirefare_id)){
+            echo '<script>
+                setTimeout(function() {
+                 swal({
+                     title: "Duplicate data",  
+                     text: "Duplicate Mirefare ID.",
+                     type: "warning"
+                 }, function() {
+                    window.history.back()
                  });192
                }, 1000);
          </script>';
         }
     }
+
+
     if (count($errors) == 0) {
 
         try {
-            echo $booking_type;
 
             $sql = "INSERT INTO tb_tn_booking(booking_id, customer_id, pa1_id, pa2_id, is_duo, locker_id, locker_name, booking_type, start_date, end_date, mirefare_id, remark, status_id, status_name, create_date, create_by) 
             VALUES ('$booking_id', '$customer_id', '$pa1_id', '$pa2_id', $is_duo, $locker_id, '$locker_name', '$booking_type', curdate(), curdate(), '$mirefare_id', 'remark', 1, 'booking', curdate(), '$create_by')";
